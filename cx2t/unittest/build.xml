@@ -10,7 +10,9 @@
   <dirname property="antfile.dir" file="${ant.file}"/>
 
   <import file="../common-targets.xml"/>
-  <property file="../claw.properties"/>
+  <!-- Value set externally-->
+  <property name="claw.properties.dir" value=""/>
+  <property file="${claw.properties.dir}/claw.properties"/>
 
   <!-- JaCoCo code coverage -->
   <taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
@@ -25,8 +27,11 @@
   <!-- Java sources directory -->
   <property name="src.dir" location="." />
 
-  <!-- Java compiled classes directory -->
-  <property name="build.dir" location="bin" />
+  <!-- Generated source directory, set externally -->
+  <property name="gen.src.dir" value="" />
+
+  <!-- Java compiled classes directory, set externally -->
+  <property name="build.dir" value="" />
 
   <!-- Classpath for dependencies -->
   <path id="build.path">
@@ -52,8 +57,13 @@
   <!-- Compile java sources -->
   <target name="compile" depends="common.resolve"
           description="compile the source">
-    <javac includeantruntime="false" srcdir="${src.dir}" destdir="${build.dir}"
-           classpathref="build.path" debug="on" />
+    <javac executable="${javac.exec}" fork="yes" includeantruntime="false" destdir="${build.dir}"
+           classpathref="build.path" debug="on" >
+      <src>
+        <pathelement path="${src.dir}"/>
+        <pathelement path="${gen.src.dir}"/>
+      </src>
+    </javac>
   </target>
 
   <!-- Package compiled files into their own library -->
@@ -81,7 +91,7 @@
     <mkdir dir="${test.reports}" />
 
     <jacoco:coverage destfile="${test.reports}/${jacoco.file}">
-      <junit fork="yes" printsummary="no" haltonfailure="yes">
+      <junit jvm="${java.exec}" fork="yes" printsummary="no" haltonfailure="yes">
         <classpath path="${claw.tatsu.ut.dep}" />
         <classpath path="${claw.tatsu.dep}" />
         <classpath path="${junit.dep}" />
@@ -113,6 +123,7 @@
         </classfiles>
         <sourcefiles encoding="UTF-8">
           <fileset dir="${src.dir}"/>
+          <fileset dir="${gen.src.dir}"/>
         </sourcefiles>
       </structure>
       <html destdir="${test.reports}"/>
@@ -129,7 +140,7 @@
   <target name="junit-shenron" depends="compile, jar">
     <mkdir dir="${test.reports}" />
     <jacoco:coverage destfile="${test.reports}/${jacoco.file}" >
-    <junit fork="yes" printsummary="no" haltonfailure="yes">
+    <junit jvm="${java.exec}" fork="yes" printsummary="no" haltonfailure="yes">
       <classpath path="${claw.shenron.ut.dep}" />
       <classpath path="${claw.tatsu.dep}" />
       <classpath path="${claw.shenron.dep}" />
@@ -162,6 +173,7 @@
         </classfiles>
         <sourcefiles encoding="UTF-8">
           <fileset dir="${src.dir}"/>
+          <fileset dir="${gen.src.dir}"/>
         </sourcefiles>
       </structure>
       <html destdir="${test.reports}"/>
@@ -178,7 +190,7 @@
   <target name="junit-wani" depends="compile, jar">
     <mkdir dir="${test.reports}" />
     <jacoco:coverage destfile="${test.reports}/${jacoco.file}" >
-    <junit fork="yes" printsummary="no" haltonfailure="yes">
+    <junit jvm="${java.exec}" fork="yes" printsummary="no" haltonfailure="yes">
       <classpath path="${claw.wani.ut.dep}" />
       <classpath path="${claw.tatsu.dep}" />
       <classpath path="${claw.shenron.dep}" />
@@ -213,6 +225,7 @@
         </classfiles>
         <sourcefiles encoding="UTF-8">
           <fileset dir="${src.dir}"/>
+          <fileset dir="${gen.src.dir}"/>
         </sourcefiles>
       </structure>
       <html destdir="${test.reports}"/>

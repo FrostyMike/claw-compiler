@@ -6,7 +6,7 @@
 # Configure files depending on a path
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/helper/TestConstant.java.in
-  ${CMAKE_CURRENT_SOURCE_DIR}/helper/TestConstant.java
+  ${CMAKE_CURRENT_BINARY_DIR}/helper/TestConstant.java
   @ONLY
 )
 
@@ -18,7 +18,12 @@ if(NOT OFFLINE)
     COMMAND ${Ant_EXECUTABLE} -f ${CMAKE_CURRENT_SOURCE_DIR}/build.xml
     ${ANT_FLAGS}
     -Dantfile.dir=${CMAKE_CURRENT_SOURCE_DIR}
+    -Dbuild.dir=${CMAKE_BINARY_DIR}/classes
     -Ddist.dir=${CMAKE_BINARY_DIR}/build
+    -Dclaw.properties.dir=${CMAKE_CURRENT_BINARY_DIR}/..
+    -Dlib.dir=${3RDPARTY_LIB_DIR}
+    -Dbin.dir=${CMAKE_CURRENT_BINARY_DIR}/bin
+    -Dgen.src.dir=${CMAKE_CURRENT_BINARY_DIR}
     init
     COMMENT "Resolving dependencies for the build"
   )
@@ -31,7 +36,12 @@ add_custom_command(
   COMMAND ${Ant_EXECUTABLE} -f ${CMAKE_CURRENT_SOURCE_DIR}/build.xml
   ${ANT_FLAGS}
   -Dantfile.dir=${CMAKE_CURRENT_SOURCE_DIR}
+  -Dbuild.dir=${CMAKE_BINARY_DIR}/classes
   -Ddist.dir=${CMAKE_BINARY_DIR}/build
+  -Dclaw.properties.dir=${CMAKE_CURRENT_BINARY_DIR}/..
+  -Dlib.dir=${3RDPARTY_LIB_DIR}
+  -Dbin.dir=${CMAKE_CURRENT_BINARY_DIR}/bin
+  -Dgen.src.dir=${CMAKE_CURRENT_BINARY_DIR}
   ${DISABLE_RESOLVE}
   COMMENT "Building CLAW XcodeML/F to XcodeML/F unit tests"
 )
@@ -44,8 +54,13 @@ add_test(
   NAME junit-tatsu
   COMMAND ${Ant_EXECUTABLE} -f ${CMAKE_CURRENT_SOURCE_DIR}/build.xml
   -Dantfile.dir=${CMAKE_CURRENT_SOURCE_DIR}
+  -Dbuild.dir=${CMAKE_BINARY_DIR}/classes
   -Ddist.dir=${CMAKE_BINARY_DIR}/build
   -Dtest.reports=${CMAKE_BINARY_DIR}/reports
+  -Dclaw.properties.dir=${CMAKE_CURRENT_BINARY_DIR}/..
+  -Dlib.dir=${3RDPARTY_LIB_DIR}
+  -Dbin.dir=${CMAKE_CURRENT_BINARY_DIR}/bin
+  -Dgen.src.dir=${CMAKE_CURRENT_BINARY_DIR}
   ${DISABLE_RESOLVE}
   junit-tatsu
 )
@@ -56,8 +71,13 @@ add_test(
   NAME junit-shenron
   COMMAND ${Ant_EXECUTABLE} -f ${CMAKE_CURRENT_SOURCE_DIR}/build.xml
   -Dantfile.dir=${CMAKE_CURRENT_SOURCE_DIR}
+  -Dbuild.dir=${CMAKE_BINARY_DIR}/classes
   -Ddist.dir=${CMAKE_BINARY_DIR}/build
   -Dtest.reports=${CMAKE_BINARY_DIR}/reports
+  -Dclaw.properties.dir=${CMAKE_CURRENT_BINARY_DIR}/..
+  -Dlib.dir=${3RDPARTY_LIB_DIR}
+  -Dbin.dir=${CMAKE_CURRENT_BINARY_DIR}/bin
+  -Dgen.src.dir=${CMAKE_CURRENT_BINARY_DIR}
   ${DISABLE_RESOLVE}
   junit-shenron
 )
@@ -68,8 +88,13 @@ add_test(
   NAME junit-wani
   COMMAND ${Ant_EXECUTABLE} -f ${CMAKE_CURRENT_SOURCE_DIR}/build.xml
   -Dantfile.dir=${CMAKE_CURRENT_SOURCE_DIR}
+  -Dbuild.dir=${CMAKE_BINARY_DIR}/classes
   -Ddist.dir=${CMAKE_BINARY_DIR}/build
   -Dtest.reports=${CMAKE_BINARY_DIR}/reports
+  -Dclaw.properties.dir=${CMAKE_CURRENT_BINARY_DIR}/..
+  -Dlib.dir=${3RDPARTY_LIB_DIR}
+  -Dbin.dir=${CMAKE_CURRENT_BINARY_DIR}/bin
+  -Dgen.src.dir=${CMAKE_CURRENT_BINARY_DIR}
   ${DISABLE_RESOLVE}
   junit-wani
 )
